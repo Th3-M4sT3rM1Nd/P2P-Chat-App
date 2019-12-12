@@ -10,8 +10,7 @@ while True:
     from_client = ''
     while True:
         data = conn.recv(4096)
-        if not data: break
-        from_client += data.decode("utf-8")
+        from_client = data.decode("utf-8")
         print(from_client)
         msg2 = "He He He"
         b2 = bytes(msg2,'utf-8')

@@ -1,6 +1,15 @@
 import socket
 from threading import Thread
+################################################################################
+# PI Interphase
 
+import RPi.GPIO as GPIO
+redled = 36
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(redled,GPIO.OUT)
+
+###############################################################################
 ################################################################################
                             #Client Side
 ################################################################################
@@ -21,6 +30,8 @@ def Client(IP,PORT):
         SThread.start()
         RThread = Thread(target=C_recv_Message,args=(client,))
         RThread.start()
+        SThread.join()
+        RThread.join()
         
 ################################################################################
                                 #Server
@@ -48,7 +59,8 @@ def S_sent_Message(TEXT,conn):
 
 def S_recv_Message(conn):
     data = conn.recv(4096)
-    print("Client : ",data.decode("utf-8"))
+    if(data.decode("utf-8")=="ON"):
+        GPIO.output(redled,True)
 
 
 
